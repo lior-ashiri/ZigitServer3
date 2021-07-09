@@ -29,31 +29,7 @@ namespace ZigitServer3.Models
 
         }
 
-        private string createJWT(Dictionary<string, string> claimsData, IConfiguration _config)
-        {
-            var builder = new JwtSecurityTokenHandler
-            {
-                SetDefaultTimesOnTokenCreation = false
-            };
-
-            var symetricSecret = _config["Jwt:Key"];
-
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(symetricSecret));
-
-            var claims = claimsData.Select(attr => new Claim(attr.Key, attr.Value));
-
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Audience = "localhost",
-                Issuer = "localhost",
-                Expires = new DateTime(DateTime.Now.Ticks).AddDays(1),
-                Subject = new System.Security.Claims.ClaimsIdentity(claims),
-                SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
-            };
-            var jwt = builder.CreateJwtSecurityToken(tokenDescriptor);
-            return builder.WriteToken(jwt);
-        }
+    
     }
 }
 
